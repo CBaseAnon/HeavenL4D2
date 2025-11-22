@@ -1,0 +1,4 @@
+{
+  "version": "1.0.1",
+  "dll_url": "https://raw.githubusercontent.com/CBaseAnon/HeavenL4D2/main/Heaven/Heaven-beta.dll"
+}

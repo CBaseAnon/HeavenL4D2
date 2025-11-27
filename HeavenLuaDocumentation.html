@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heaven-Hook API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0a;
+            color: #d0d0d0;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .web-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.08;
+        }
+
+        .web-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #555, transparent);
+            height: 1px;
+            animation: webPulse 10s infinite ease-in-out;
+        }
+
+        @keyframes webPulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.6; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            background: #0d0d0d;
+            border: 1px solid #222;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: #777;
+            font-size: 1.1em;
+            font-weight: 300;
+        }
+
+        .nav {
+            background: #0d0d0d;
+            border: 1px solid #222;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            color: #999;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            font-size: 0.9em;
+            font-weight: 400;
+        }
+
+        .nav-btn:hover {
+            background: #1a1a1a;
+            color: #fff;
+            border-color: #444;
+        }
+
+        .nav-btn.active {
+            background: #1f1f1f;
+            color: #fff;
+            border-color: #555;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category {
+            background: #0d0d0d;
+            border: 1px solid #222;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .category-header {
+            background: #111;
+            padding: 16px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+
+        .category-header:hover {
+            background: #161616;
+        }
+
+        .category-header h2 {
+            color: #ddd;
+            font-size: 1.3em;
+            font-weight: 400;
+        }
+
+        .category-toggle {
+            color: #555;
+            font-size: 1em;
+            transition: transform 0.2s ease;
+        }
+
+        .category-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .category.open .category-content {
+            max-height: 10000px;
+        }
+
+        .category.open .category-toggle {
+            transform: rotate(180deg);
+        }
+
+        .function {
+            padding: 20px;
+            border-bottom: 1px solid #181818;
+        }
+
+        .function:last-child {
+            border-bottom: none;
+        }
+
+        .function-name {
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .function-desc {
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #080808;
+            border: 1px solid #1a1a1a;
+            padding: 15px;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+            color: #bbb;
+        }
+
+        .param-list {
+            margin: 15px 0;
+        }
+
+        .param {
+            display: flex;
+            padding: 8px 0;
+            border-bottom: 1px solid #141414;
+        }
+
+        .param-name {
+            color: #ccc;
+            min-width: 150px;
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+        }
+
+        .param-type {
+            color: #888;
+            min-width: 100px;
+            font-style: italic;
+        }
+
+        .param-desc {
+            color: #999;
+            flex: 1;
+        }
+
+        .return-info {
+            background: #0a0a0a;
+            padding: 10px 15px;
+            border-left: 2px solid #444;
+            margin: 10px 0;
+            color: #aaa;
+        }
+
+        .example {
+            background: #080808;
+            border: 1px solid #1a1a1a;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .example-title {
+            color: #bbb;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .warning {
+            background: #0f0808;
+            border-left: 2px solid #666;
+            padding: 10px 15px;
+            margin: 10px 0;
+            color: #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #1a1a1a;
+        }
+
+        th {
+            background: #0f0f0f;
+            color: #ddd;
+            font-weight: 500;
+        }
+
+        td {
+            background: #0a0a0a;
+            color: #999;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #555;
+            border-top: 1px solid #222;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="web-background" id="webBg"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>HEAVEN-HOOK LUA API</h1>
+            <p>Complete API Documentation for Lua Scripting</p>
+        </div>
+
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('hooks')">Hooks</button>
+            <button class="nav-btn" onclick="showSection('client')">Client</button>
+            <button class="nav-btn" onclick="showSection('entity')">Entity</button>
+            <button class="nav-btn" onclick="showSection('player')">Player</button>
+            <button class="nav-btn" onclick="showSection('usercmd')">UserCmd</button>
+            <button class="nav-btn" onclick="showSection('engine')">Engine</button>
+            <button class="nav-btn" onclick="showSection('draw')">Draw</button>
+            <button class="nav-btn" onclick="showSection('input')">Input</button>
+            <button class="nav-btn" onclick="showSection('materials')">Materials</button>
+            <button class="nav-btn" onclick="showSection('memory')">Memory</button>
+            <button class="nav-btn" onclick="showSection('math')">Math</button>
+            <button class="nav-btn" onclick="showSection('menu')">Menu</button>
+            <button class="nav-btn" onclick="showSection('events')">Events</button>
+            <button class="nav-btn" onclick="showSection('cvar')">ConVar</button>
+            <button class="nav-btn" onclick="showSection('constants')">Constants</button>
+            <button class="nav-btn" onclick="showSection('examples')">Examples</button>
+        </div>
+
+        <div id="hooks" class="section active">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Callback Hooks</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">on_create_move(cmd, local_player)</div>
+                        <div class="function-desc">Called every tick on the CreateMove hook. Use for aimbot, movement, and input manipulation.</div>
+                        <div class="param-list">
+                            <div class="param">
+                                <span class="param-name">cmd</span>
+                                <span class="param-type">UserCmd</span>
+                                <span class="param-desc">User command object for current tick</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">local_player</span>
+                                <span class="param-type">CTerrorPlayer</span>
+                                <span class="param-desc">Local player entity</span>
+                            </div>
+                        </div>
+                        <div class="example">
+                            <div class="example-title">Example:</div>
+                            <div class="code-block">function on_create_move(cmd, local_player)
+    local angles = cmd:get_viewangles()
+    angles.y = angles.y + 1.0
+    cmd:set_viewangles(angles)
+end</div>
+                        </div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">on_end_scene()</div>
+                        <div class="function-desc">Called every frame on the rendering thread. Use for ImGui menus and rendering.</div>
+                        <div class="example">
+                            <div class="example-title">Example:</div>
+                            <div class="code-block">function on_end_scene()
+    if imgui.begin("My Window") then
+        imgui.text("Hello World")
+        imgui.end()
+    end
+end</div>
+                        </div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">on_paint()</div>
+                        <div class="function-desc">Called every frame for ESP and 2D rendering.</div>
+                        <div class="example">
+                            <div class="example-title">Example:</div>
+                            <div class="code-block">function on_paint()
+    draw.string(fonts.ESP, 100, 100, 1, 1, 1, 1, text_align.LEFT, "ESP Text")
+end</div>
+                        </div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">on_draw_model_execute(model_info)</div>
+                        <div class="function-desc">Called before each model is rendered. Use for chams and model modifications.</div>
+                        <div class="param-list">
+                            <div class="param">
+                                <span class="param-name">model_info</span>
+                                <span class="param-type">table</span>
+                                <span class="param-desc">Contains entity_index and model_name</span>
+                            </div>
+                        </div>
+                        <div class="example">
+                            <div class="example-title">Example:</div>
+                            <div class="code-block">function on_draw_model_execute(info)
+    if info.entity_index > 0 then
+        local mat = materials.find("vgui/white", nil)
+        if mat ~= 0 then
+            render.override_material(mat, 1, 0, 0, 1, false)
+        end
+    end
+end</div>
+                        </div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">on_game_event(event_name, event)</div>
+                        <div class="function-desc">Called when a registered game event fires.</div>
+                        <div class="param-list">
+                            <div class="param">
+                                <span class="param-name">event_name</span>
+                                <span class="param-type">string</span>
+                                <span class="param-desc">Name of the event</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">event</span>
+                                <span class="param-type">IGameEvent</span>
+                                <span class="param-desc">Event object</span>
+                            </div>
+                        </div>
+                        <div class="example">
+                            <div class="example-title">Example:</div>
+                            <div class="code-block">events.register("player_death")
+
+function on_game_event(name, event)
+    if name == "player_death" then
+        local victim = event:get_int("userid")
+        client.print("Player died: " .. victim)
+    end
+end</div>
+                        </div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">on_cl_move_pre()</div>
+                        <div class="function-desc">Called before CL_Move processes commands.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">on_cl_move_post()</div>
+                        <div class="function-desc">Called after CL_Move processes commands.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">on_unload()</div>
+                        <div class="function-desc">Called when script is being unloaded. Use for cleanup.</div>
+                        <div class="example">
+                            <div class="example-title">Example:</div>
+                            <div class="code-block">function on_unload()
+    client.print("Script unloading, cleaning up...")
+end</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="client" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Client Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">client.print(text)</div>
+                        <div class="function-desc">Prints text to the Lua console.</div>
+                        <div class="code-block">client.print("Hello World")</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.exec(command)</div>
+                        <div class="function-desc">Executes a console command without restrictions.</div>
+                        <div class="warning">Warning: This bypasses sv_cheats restrictions</div>
+                        <div class="code-block">client.exec("sv_cheats 1")</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.execnormal(command)</div>
+                        <div class="function-desc">Executes a console command with normal restrictions.</div>
+                        <div class="code-block">client.execnormal("say hello")</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.get_local_player()</div>
+                        <div class="return-info">Returns: CTerrorPlayer or nil</div>
+                        <div class="code-block">local me = client.get_local_player()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.get_tick_count()</div>
+                        <div class="return-info">Returns: integer</div>
+                        <div class="code-block">local tick = client.get_tick_count()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.get_frame_time()</div>
+                        <div class="return-info">Returns: float</div>
+                        <div class="code-block">local ft = client.get_frame_time()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.set_send_packet(value)</div>
+                        <div class="function-desc">Controls whether the current command is sent to the server.</div>
+                        <div class="param-list">
+                            <div class="param">
+                                <span class="param-name">value</span>
+                                <span class="param-type">boolean</span>
+                                <span class="param-desc">true to send, false to choke</span>
+                            </div>
+                        </div>
+                        <div class="code-block">client.set_send_packet(false)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.get_send_packet()</div>
+                        <div class="return-info">Returns: boolean</div>
+                        <div class="code-block">local sending = client.get_send_packet()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.set_extra_commands(count)</div>
+                        <div class="function-desc">Sets the number of extra commands to process per tick.</div>
+                        <div class="param-list">
+                            <div class="param">
+                                <span class="param-name">count</span>
+                                <span class="param-type">integer</span>
+                                <span class="param-desc">-1 to 50</span>
+                            </div>
+                        </div>
+                        <div class="code-block">client.set_extra_commands(20)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.get_extra_commands()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.get_chainsaw_cycles()</div>
+                        <div class="return-info">Returns: integer</div>
+                        <div class="function-desc">Gets the current chainsaw cycle count.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Shared Variables</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">client.set_shared_bool(key, value)</div>
+                        <div class="function-desc">Sets a shared boolean value accessible across hooks.</div>
+                        <div class="code-block">client.set_shared_bool("my_flag", true)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.get_shared_bool(key, default)</div>
+                        <div class="return-info">Returns: boolean</div>
+                        <div class="code-block">local flag = client.get_shared_bool("my_flag", false)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.set_shared_int(key, value)</div>
+                        <div class="code-block">client.set_shared_int("counter", 100)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.get_shared_int(key, default)</div>
+                        <div class="return-info">Returns: integer</div>
+                        <div class="code-block">local count = client.get_shared_int("counter", 0)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.set_shared_float(key, value)</div>
+                        <div class="code-block">client.set_shared_float("distance", 123.45)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">client.get_shared_float(key, default)</div>
+                        <div class="return-info">Returns: float</div>
+                        <div class="code-block">local dist = client.get_shared_float("distance", 0.0)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="entity" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Entity Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">entity.get_all()</div>
+                        <div class="return-info">Returns: table of CTerrorPlayer</div>
+                        <div class="function-desc">Gets all entities in the world.</div>
+                        <div class="code-block">local entities = entity.get_all()
+for i, ent in pairs(entities) do
+    client.print("Entity: " .. i)
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.get_by_index(index)</div>
+                        <div class="return-info">Returns: CTerrorPlayer or nil</div>
+                        <div class="code-block">local ent = entity.get_by_index(1)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.get_by_index_raw(index)</div>
+                        <div class="return-info">Returns: integer (entity pointer)</div>
+                        <div class="function-desc">Gets entity as raw pointer for generic entity functions.</div>
+                        <div class="code-block">local ent_ptr = entity.get_by_index_raw(5)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.get_player_count()</div>
+                        <div class="return-info">Returns: integer</div>
+                        <div class="code-block">local count = entity.get_player_count()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.is_dormant(entity_ptr)</div>
+                        <div class="return-info">Returns: boolean</div>
+                        <div class="code-block">if entity.is_dormant(ent_ptr) then
+    client.print("Entity is dormant")
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.get_class_id_from_ptr(entity_ptr)</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.is_zombie_from_ptr(entity_ptr)</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.valid_entity_from_ptr(entity_ptr, sequence, solid_flags)</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.get_sequence_from_ptr(entity_ptr)</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.get_solid_flags_from_ptr(entity_ptr)</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">entity.is_alive_from_ptr(entity_ptr)</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="player" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Player Methods</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">player:get_health()</div>
+                        <div class="return-info">Returns: integer</div>
+                        <div class="code-block">local hp = player:get_health()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_max_health()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_origin()</div>
+                        <div class="return-info">Returns: Vector</div>
+                        <div class="code-block">local pos = player:get_origin()
+client.print("X: " .. pos.x .. " Y: " .. pos.y .. " Z: " .. pos.z)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_eye_position()</div>
+                        <div class="return-info">Returns: Vector</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_eye_angles()</div>
+                        <div class="return-info">Returns: Vector (angles)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_velocity()</div>
+                        <div class="return-info">Returns: Vector</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_team()</div>
+                        <div class="return-info">Returns: integer</div>
+                        <div class="code-block">if player:get_team() == team.SURVIVORS then
+    client.print("Survivor")
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_name()</div>
+                        <div class="return-info">Returns: string</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_index()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:is_alive()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:is_on_ground()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:is_ducking()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:is_incapacitated()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:is_ghost()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:is_zombie()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_zombie_class()</div>
+                        <div class="return-info">Returns: integer</div>
+                        <div class="code-block">if player:get_zombie_class() == zombie_class.HUNTER then
+    client.print("Hunter!")
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_survivor_character()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_health_buffer()</div>
+                        <div class="return-info">Returns: float</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_class_id()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_sequence_name(sequence)</div>
+                        <div class="return-info">Returns: string or nil</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_solid_flags()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:get_move_type()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">player:valid_entity(sequence, solid_flags)</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="usercmd" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>UserCmd Methods</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">cmd:get_viewangles()</div>
+                        <div class="return-info">Returns: Vector</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_viewangles(angles)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_buttons()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_buttons(buttons)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_forwardmove()</div>
+                        <div class="return-info">Returns: float</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_forwardmove(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_sidemove()</div>
+                        <div class="return-info">Returns: float</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_sidemove(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_upmove()</div>
+                        <div class="return-info">Returns: float</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_upmove(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_tickcount()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_tickcount(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_command_number()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_command_number(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_impulse()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_impulse(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_weaponselect()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_weaponselect(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_weaponsubtype()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_weaponsubtype(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_random_seed()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_random_seed(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_mousedx()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_mousedx(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_mousedy()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_mousedy(value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:get_predicted()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cmd:set_predicted(value)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="engine" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Engine Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">engine.get_screen_size()</div>
+                        <div class="return-info">Returns: width, height</div>
+                        <div class="code-block">local w, h = engine.get_screen_size()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.get_view_angles()</div>
+                        <div class="return-info">Returns: Vector</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.set_view_angles(angles)</div>
+                        <div class="code-block">local angles = vector.new(0, 90, 0)
+engine.set_view_angles(angles)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.get_max_clients()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.is_in_game()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.is_connected()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.is_paused()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.get_level_name()</div>
+                        <div class="return-info">Returns: string</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.get_level_name_short()</div>
+                        <div class="return-info">Returns: string</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.get_player_info(index)</div>
+                        <div class="return-info">Returns: table with name and userid</div>
+                        <div class="code-block">local info = engine.get_player_info(1)
+if info then
+    client.print(info.name)
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.get_player_for_userid(userid)</div>
+                        <div class="return-info">Returns: integer (entity index)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.execute_client_cmd(command)</div>
+                        <div class="code-block">engine.execute_client_cmd("say hello")</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.is_console_visible()</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.con_nprintf(line, text)</div>
+                        <div class="function-desc">Prints text to a specific console line.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.get_net_channel_info()</div>
+                        <div class="return-info">Returns: table with network statistics</div>
+                        <div class="code-block">local net = engine.get_net_channel_info()
+if net then
+    client.print("Latency: " .. net.latency_out)
+    client.print("Loss: " .. net.loss_out)
+    client.print("Choke: " .. net.choke_out)
+end</div>
+                    </div>
+                    <div class="function">
+                        <div class="function-name">engine.get_netchan_ptr()</div>
+                        <div class="return-info">Returns: Pointer of netchan for exploits and network maniuplations</div>
+                    </div>
+                    <div class="function">
+                        <div class="function-name">engine.get_timescale()</div>
+                        <div class="return-info">Returns: float</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.set_timescale(scale)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">engine.get_app_id()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="draw" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Draw Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">draw.string(font, x, y, r, g, b, a, align, text)</div>
+                        <div class="function-desc">Draws text on screen.</div>
+                        <div class="code-block">draw.string(fonts.ESP, 100, 100, 1, 1, 1, 1, text_align.LEFT, "Hello")</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.line(x1, y1, x2, y2, r, g, b, a)</div>
+                        <div class="code-block">draw.line(0, 0, 100, 100, 1, 0, 0, 1)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.rect(x, y, w, h, r, g, b, a)</div>
+                        <div class="function-desc">Draws a filled rectangle.</div>
+                        <div class="code-block">draw.rect(50, 50, 200, 100, 0, 1, 0, 0.5)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.outlined_rect(x, y, w, h, r, g, b, a)</div>
+                        <div class="function-desc">Draws a rectangle outline.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.gradient_rect(x, y, w, h, r1, g1, b1, a1, r2, g2, b2, a2, horizontal)</div>
+                        <div class="code-block">draw.gradient_rect(0, 0, 100, 50, 1, 0, 0, 1, 0, 0, 1, 1, true)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.circle(x, y, radius, segments, r, g, b, a)</div>
+                        <div class="code-block">draw.circle(400, 300, 50, 32, 1, 1, 0, 1)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.outlined_circle(x, y, radius, segments, r, g, b, a)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.triangle(x1, y1, x2, y2, x3, y3, r, g, b, a)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.get_text_width(font, text)</div>
+                        <div class="return-info">Returns: integer</div>
+                        <div class="code-block">local width = draw.get_text_width(fonts.ESP, "Text")</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.get_font_height(font)</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">draw.get_screen_size()</div>
+                        <div class="return-info">Returns: width, height</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Font Constants</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="code-block">fonts.DEBUG
+fonts.ESP
+fonts.ESP_NAME
+fonts.ESP_WEAPON
+fonts.MENU_TAHOMA
+fonts.MENU_CONSOLAS
+fonts.MENU_VERDANA
+fonts.MENU_ARIAL
+fonts.MENU_TAB</div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Text Align Constants</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="code-block">text_align.DEFAULT
+text_align.LEFT
+text_align.TOP
+text_align.CENTERX
+text_align.CENTERY
+text_align.CENTERXY</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="input" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Input Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">input.is_key_down(key)</div>
+                        <div class="return-info">Returns: boolean</div>
+                        <div class="code-block">if input.is_key_down(keys.KEY_W) then
+    client.print("W is held")
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">input.is_key_pressed(key)</div>
+                        <div class="return-info">Returns: boolean</div>
+                        <div class="function-desc">Returns true only on the frame the key was pressed.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">input.is_key_released(key)</div>
+                        <div class="return-info">Returns: boolean</div>
+                        <div class="function-desc">Returns true only on the frame the key was released.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">input.get_cursor_pos()</div>
+                        <div class="return-info">Returns: x, y</div>
+                        <div class="code-block">local x, y = input.get_cursor_pos()</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Key Constants</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="code-block">keys.MOUSE1, keys.MOUSE2, keys.MOUSE3, keys.MOUSE4, keys.MOUSE5
+keys.KEY_0 through keys.KEY_9
+keys.KEY_A through keys.KEY_Z
+keys.F1 through keys.F12
+keys.ESCAPE, keys.SPACE, keys.ENTER, keys.BACKSPACE, keys.TAB
+keys.SHIFT, keys.CTRL, keys.ALT
+keys.LEFT, keys.RIGHT, keys.UP, keys.DOWN
+keys.NUMPAD0 through keys.NUMPAD9</div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Button Constants</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="code-block">buttons.IN_ATTACK
+buttons.IN_JUMP
+buttons.IN_DUCK
+buttons.IN_FORWARD
+buttons.IN_BACK
+buttons.IN_USE
+buttons.IN_MOVELEFT
+buttons.IN_MOVERIGHT
+buttons.IN_ATTACK2
+buttons.IN_RELOAD
+buttons.IN_SPEED
+buttons.IN_ZOOM</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="materials" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Material Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">materials.find(name, group)</div>
+                        <div class="return-info">Returns: integer (material pointer) or 0</div>
+                        <div class="code-block">local mat = materials.find("vgui/white", nil)
+if mat ~= 0 then
+    materials.color_modulate(mat, 1, 0, 0)
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">materials.get_all()</div>
+                        <div class="return-info">Returns: table of materials</div>
+                        <div class="code-block">local mats = materials.get_all()
+for i, mat in pairs(mats) do
+    client.print(mat.name)
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">materials.get_name(material_ptr)</div>
+                        <div class="return-info">Returns: string</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">materials.get_texture_group(material_ptr)</div>
+                        <div class="return-info">Returns: string</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">materials.color_modulate(material_ptr, r, g, b)</div>
+                        <div class="function-desc">Sets the material color tint.</div>
+                        <div class="code-block">materials.color_modulate(mat, 1.0, 0.5, 0.0)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">materials.alpha_modulate(material_ptr, alpha)</div>
+                        <div class="function-desc">Sets the material transparency.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">materials.set_material_var_flag(material_ptr, flag, value)</div>
+                        <div class="code-block">materials.set_material_var_flag(mat, material_flags.IGNOREZ, true)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">materials.force_override(material_ptr)</div>
+                        <div class="function-desc">Forces this material to be used for all rendering. Pass nil to reset.</div>
+                        <div class="code-block">materials.force_override(mat)
+materials.force_override(nil)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Material Flag Constants</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="code-block">material_flags.DEBUG
+material_flags.NO_DRAW
+material_flags.IGNOREZ
+material_flags.FLAT
+material_flags.NOCULL
+material_flags.NOFOG
+material_flags.WIREFRAME
+material_flags.TRANSLUCENT</div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Render Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">render.override_material(material_ptr, r, g, b, a, ignore_z)</div>
+                        <div class="function-desc">Overrides rendering with specified material and color.</div>
+                        <div class="code-block">render.override_material(mat, 1, 0, 0, 1, false)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">render.clear_override()</div>
+                        <div class="function-desc">Clears the material override.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">render.get_current_model_info()</div>
+                        <div class="return-info">Returns: table with entity_index and model_ptr</div>
+                        <div class="function-desc">Only valid inside on_draw_model_execute hook.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">render.call_original_draw_model()</div>
+                        <div class="function-desc">Calls the original DrawModelExecute function.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="memory" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Memory Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="warning">Warning: Memory functions are dangerous and can crash the game if misused</div>
+
+                    <div class="function">
+                        <div class="function-name">memory.read_byte(address)</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">memory.read_int(address)</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">memory.read_float(address)</div>
+                        <div class="return-info">Returns: float</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">memory.write_int(address, value, writeable)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">memory.write_float(address, value, writeable)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">memory.set_bytes(address, size, byte, writeable)</div>
+                        <div class="function-desc">Sets a region of memory to a specific byte value.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">memory.copy_bytes(address, size, bytes_table, writeable)</div>
+                        <div class="function-desc">Copies bytes from a table to memory.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">modules.get_client_base()</div>
+                        <div class="return-info">Returns: integer (base address)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">modules.get_engine_base()</div>
+                        <div class="return-info">Returns: integer (base address)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="math" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Math Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">math.normalize_angle(angle)</div>
+                        <div class="return-info">Returns: float</div>
+                        <div class="function-desc">Normalizes angle to -180 to 180 range.</div>
+                        <div class="code-block">local normalized = math.normalize_angle(270)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">math.angle_diff(angle1, angle2)</div>
+                        <div class="return-info">Returns: float</div>
+                        <div class="function-desc">Calculates the shortest difference between two angles.</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">math.clamp(value, min, max)</div>
+                        <div class="return-info">Returns: float</div>
+                        <div class="code-block">local clamped = math.clamp(value, 0, 100)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">math.lerp(a, b, t)</div>
+                        <div class="return-info">Returns: float</div>
+                        <div class="function-desc">Linear interpolation between a and b.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Vector Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">vector.new(x, y, z)</div>
+                        <div class="return-info">Returns: Vector</div>
+                        <div class="code-block">local vec = vector.new(100, 200, 300)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">vector.distance(v1, v2)</div>
+                        <div class="return-info">Returns: float</div>
+                        <div class="code-block">local dist = vector.distance(pos1, pos2)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">vector.dot(v1, v2)</div>
+                        <div class="return-info">Returns: float</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">vector.length(v)</div>
+                        <div class="return-info">Returns: float</div>
+                        <div class="code-block">local len = vector.length(velocity)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">utils.vector_normalize(vec)</div>
+                        <div class="return-info">Returns: Vector, float (normalized vector and original length)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">utils.angle_vectors(angles)</div>
+                        <div class="return-info">Returns: forward, right, up (all Vectors)</div>
+                        <div class="code-block">local fwd, right, up = utils.angle_vectors(angles)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="menu" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Menu Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">menu.add_main_tab(name, render_callback)</div>
+                        <div class="function-desc">Adds a new main tab to the menu.</div>
+                        <div class="code-block">menu.add_main_tab("My Tab", function()
+    imgui.text("Tab content")
+end)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">menu.add_sub_tab(parent_tab, name, render_callback)</div>
+                        <div class="function-desc">Adds a sub-tab under an existing tab.</div>
+                        <div class="code-block">menu.add_sub_tab("Aimbot", "Settings", function()
+    imgui.text("Sub-tab content")
+end)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">menu.inject_into_subtab(parent_tab, sub_tab, render_callback)</div>
+                        <div class="function-desc">Injects content into an existing sub-tab.</div>
+                        <div class="code-block">menu.inject_into_subtab("Aimbot", "Visuals", function()
+    imgui.text("Injected content")
+end)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>ImGui Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">imgui.begin(name, flags)</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.end()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.text(text)</div>
+                        <div class="code-block">imgui.text("Hello World")</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.text_colored(r, g, b, a, text)</div>
+                        <div class="code-block">imgui.text_colored(1, 0, 0, 1, "Red text")</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.button(label)</div>
+                        <div class="return-info">Returns: boolean (true if clicked)</div>
+                        <div class="code-block">if imgui.button("Click Me") then
+    client.print("Clicked!")
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.checkbox(label, value)</div>
+                        <div class="return-info">Returns: changed, new_value</div>
+                        <div class="code-block">local changed, enabled = imgui.checkbox("Enable", my_bool)
+if changed then
+    my_bool = enabled
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.slider_int(label, value, min, max)</div>
+                        <div class="return-info">Returns: changed, new_value</div>
+                        <div class="code-block">local changed, val = imgui.slider_int("Amount", count, 0, 100)
+if changed then
+    count = val
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.slider_float(label, value, min, max)</div>
+                        <div class="return-info">Returns: changed, new_value</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.input_text(label, text, max_length)</div>
+                        <div class="return-info">Returns: changed, new_text</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.combo(label, current_item, items_table)</div>
+                        <div class="return-info">Returns: changed, selected_index</div>
+                        <div class="code-block">local items = {"Option 1", "Option 2", "Option 3"}
+local changed, idx = imgui.combo("Select", selected, items)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.separator()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.same_line()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.spacing()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.new_line()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.begin_child(name, width, height, border, flags)</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.end_child()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.columns(count, id, border)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.next_column()</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.get_column_index()</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.set_column_width(index, width)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.push_item_width(width)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">imgui.pop_item_width()</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="events" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Game Event System</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">events.register(event_name)</div>
+                        <div class="function-desc">Registers to receive a specific game event.</div>
+                        <div class="code-block">events.register("player_death")
+events.register("player_hurt")
+events.register("round_start")</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">on_game_event(event_name, event)</div>
+                        <div class="function-desc">Hook that receives registered events.</div>
+                        <div class="example">
+                            <div class="example-title">Example:</div>
+                            <div class="code-block">events.register("player_death")
+events.register("player_hurt")
+
+function on_game_event(name, event)
+    if name == "player_death" then
+        local victim = event:get_int("userid")
+        local attacker = event:get_int("attacker")
+        client.print("Kill: " .. attacker .. " -> " .. victim)
+    elseif name == "player_hurt" then
+        local dmg = event:get_int("dmg_health")
+        client.print("Damage: " .. dmg)
+    end
+end</div>
+                        </div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">event:get_name()</div>
+                        <div class="return-info">Returns: string</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">event:get_bool(key)</div>
+                        <div class="return-info">Returns: boolean</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">event:get_int(key)</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">event:get_float(key)</div>
+                        <div class="return-info">Returns: float</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">event:get_string(key)</div>
+                        <div class="return-info">Returns: string</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Common L4D2 Events</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <table>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Description</th>
+                            <th>Common Keys</th>
+                        </tr>
+                        <tr>
+                            <td>player_death</td>
+                            <td>Player dies</td>
+                            <td>userid, attacker, weapon</td>
+                        </tr>
+                        <tr>
+                            <td>player_hurt</td>
+                            <td>Player takes damage</td>
+                            <td>userid, attacker, dmg_health, hitgroup</td>
+                        </tr>
+                        <tr>
+                            <td>player_spawn</td>
+                            <td>Player spawns</td>
+                            <td>userid</td>
+                        </tr>
+                        <tr>
+                            <td>round_start</td>
+                            <td>Round starts</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>round_end</td>
+                            <td>Round ends</td>
+                            <td>winner</td>
+                        </tr>
+                        <tr>
+                            <td>infected_death</td>
+                            <td>Infected dies</td>
+                            <td>userid, attacker</td>
+                        </tr>
+                        <tr>
+                            <td>player_incapacitated</td>
+                            <td>Player goes down</td>
+                            <td>userid, attacker</td>
+                        </tr>
+                        <tr>
+                            <td>heal_success</td>
+                            <td>Player healed</td>
+                            <td>userid, subject, health_restored</td>
+                        </tr>
+                        <tr>
+                            <td>weapon_fire</td>
+                            <td>Weapon fired</td>
+                            <td>userid, weapon</td>
+                        </tr>
+                        <tr>
+                            <td>witch_killed</td>
+                            <td>Witch killed</td>
+                            <td>userid, oneshot</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="cvar" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>ConVar Functions</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">cvar.find(name)</div>
+                        <div class="return-info">Returns: integer (cvar pointer) or 0</div>
+                        <div class="code-block">local sv_cheats = cvar.find("sv_cheats")
+if sv_cheats ~= 0 then
+    local value = cvar.get_int(sv_cheats)
+    client.print("sv_cheats: " .. value)
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.get_int(cvar_ptr)</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.get_float(cvar_ptr)</div>
+                        <div class="return-info">Returns: float</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.get_string(cvar_ptr)</div>
+                        <div class="return-info">Returns: string</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.set_int(cvar_ptr, value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.set_float(cvar_ptr, value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.set_string(cvar_ptr, value)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.get_name(cvar_ptr)</div>
+                        <div class="return-info">Returns: string</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.get_flags(cvar_ptr)</div>
+                        <div class="return-info">Returns: integer</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.set_flags(cvar_ptr, flags)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.add_flags(cvar_ptr, flags)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">cvar.remove_flags(cvar_ptr, flags)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="constants" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Team Constants</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="code-block">team.UNASSIGNED = 0
+team.SPECTATOR = 1
+team.SURVIVORS = 2
+team.INFECTED = 3</div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Zombie Class Constants</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="code-block">zombie_class.SMOKER = 1
+zombie_class.BOOMER = 2
+zombie_class.HUNTER = 3
+zombie_class.SPITTER = 4
+zombie_class.JOCKEY = 5
+zombie_class.CHARGER = 6
+zombie_class.TANK = 8</div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Class ID Constants</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="code-block">class_id.JOCKEY = 265
+class_id.SPITTER = 272
+class_id.CHARGER = 99
+class_id.HUNTER = 263
+class_id.SMOKER = 270
+class_id.BOOMER = 0
+class_id.TANK = 276
+class_id.WITCH = 277
+class_id.INFECTED = 264</div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>ConVar Flags</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="code-block">cvar_flags.NONE
+cvar_flags.UNREGISTERED
+cvar_flags.DEVELOPMENTONLY
+cvar_flags.GAMEDLL
+cvar_flags.CLIENTDLL
+cvar_flags.HIDDEN
+cvar_flags.PROTECTED
+cvar_flags.SPONLY
+cvar_flags.ARCHIVE
+cvar_flags.NOTIFY
+cvar_flags.USERINFO
+cvar_flags.CHEAT
+cvar_flags.REPLICATED
+cvar_flags.SERVER_CAN_EXECUTE
+cvar_flags.CLIENTCMD_CAN_EXECUTE</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="examples" class="section">
+            <div class="category open">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2>Complete Script Examples</h2>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="function">
+                        <div class="function-name">Simple ESP</div>
+                        <div class="code-block">function on_paint()
+    local me = client.get_local_player()
+    if not me then return end
+    
+    local players = entity.get_all()
+    for i, player in pairs(players) do
+        if player:is_alive() and player:get_index() ~= me:get_index() then
+            local pos = player:get_origin()
+            local name = player:get_name()
+            local health = player:get_health()
+            
+            draw.string(fonts.ESP, 100, 100 + (i * 20), 
+                1, 1, 1, 1, text_align.LEFT, 
+                name .. " [" .. health .. " HP]")
+        end
+    end
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">Bhop Script</div>
+                        <div class="code-block">function on_create_move(cmd, local_player)
+    if not local_player:is_alive() then return end
+    
+    local buttons = cmd:get_buttons()
+    
+    if buttons & buttons.IN_JUMP ~= 0 then
+        if not local_player:is_on_ground() then
+            cmd:set_buttons(buttons & ~buttons.IN_JUMP)
+        end
+    end
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">Lag Exploit</div>
+                        <div class="code-block">
+function on_create_move(cmd, local_player)
+    if not local_player then return end
+    
+    if input.is_key_down(keys.MOUSE5) then
+        local netchan_ptr = engine.get_netchan_ptr()
+        
+        if netchan_ptr ~= 0 then
+            local sequence_offset = netchan_ptr + 8
+            local current_sequence = memory.read_int(sequence_offset)
+            local new_sequence = current_sequence + 600
+            memory.write_int(sequence_offset, new_sequence, true)
+        end
+    end
+end
+</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">Chams Script</div>
+                        <div class="code-block">local flat_mat = 0
+
+function on_end_scene()
+    if flat_mat == 0 then
+        flat_mat = materials.find("vgui/white", nil)
+    end
+end
+
+function on_draw_model_execute(info)
+    if info.entity_index <= 0 then return end
+    
+    local ent = entity.get_by_index(info.entity_index)
+    if not ent or not ent:is_alive() then return end
+    
+    if ent:get_team() == team.INFECTED then
+        render.override_material(flat_mat, 1, 0, 0, 1, false)
+    end
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">Custom Menu Tab</div>
+                        <div class="code-block">local my_enabled = false
+local my_value = 50
+local my_text = "Hello"
+
+menu.add_main_tab("My Script", function()
+    imgui.text("My Custom Tab")
+    imgui.separator()
+    
+    local changed, val = imgui.checkbox("Enable Feature", my_enabled)
+    if changed then
+        my_enabled = val
+        client.print("Feature " .. (val and "enabled" or "disabled"))
+    end
+    
+    changed, val = imgui.slider_int("Value", my_value, 0, 100)
+    if changed then
+        my_value = val
+    end
+    
+    changed, val = imgui.input_text("Text", my_text, 256)
+    if changed then
+        my_text = val
+    end
+    
+    if imgui.button("Print Values") then
+        client.print("Enabled: " .. tostring(my_enabled))
+        client.print("Value: " .. my_value)
+        client.print("Text: " .. my_text)
+    end
+end)</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">Event Logger</div>
+                        <div class="code-block">events.register("player_death")
+events.register("player_hurt")
+events.register("infected_death")
+
+function on_game_event(name, event)
+    if name == "player_death" then
+        local victim_id = event:get_int("userid")
+        local attacker_id = event:get_int("attacker")
+        local weapon = event:get_string("weapon")
+        
+        local victim_idx = engine.get_player_for_userid(victim_id)
+        local attacker_idx = engine.get_player_for_userid(attacker_id)
+        
+        local victim_info = engine.get_player_info(victim_idx)
+        local attacker_info = engine.get_player_info(attacker_idx)
+        
+        if victim_info and attacker_info then
+            client.print(attacker_info.name .. " killed " .. 
+                        victim_info.name .. " with " .. weapon)
+        end
+    end
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">Speed Display</div>
+                        <div class="code-block">function on_paint()
+    local me = client.get_local_player()
+    if not me or not me:is_alive() then return end
+    
+    local vel = me:get_velocity()
+    local speed = math.sqrt(vel.x * vel.x + vel.y * vel.y)
+    
+    local w, h = draw.get_screen_size()
+    local text = string.format("Speed: %.0f", speed)
+    
+    draw.string(fonts.ESP_NAME, w / 2, h - 100, 
+        1, 1, 1, 1, text_align.CENTERX, text)
+end</div>
+                    </div>
+
+                    <div class="function">
+                        <div class="function-name">Anti-AFK</div>
+                        <div class="code-block">local last_move_time = 0
+
+function on_create_move(cmd, local_player)
+    local current_time = client.get_tick_count()
+    
+    if current_time - last_move_time > 600 then
+        local buttons = cmd:get_buttons()
+        cmd:set_buttons(buttons | buttons.IN_JUMP)
+        last_move_time = current_time
+    end
+    
+    if cmd:get_forwardmove() ~= 0 or cmd:get_sidemove() ~= 0 then
+        last_move_time = current_time
+    end
+end</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Heaven-Hook Lua API Documentation</p>
+            <p>Version 1.0</p>
+        </div>
+    </div>
+
+    <script>
+        function createWebBackground() {
+            const bg = document.getElementById('webBg');
+            const lines = 30;
+            
+            for (let i = 0; i < lines; i++) {
+                const line = document.createElement('div');
+                line.className = 'web-line';
+                line.style.width = Math.random() * 400 + 100 + 'px';
+                line.style.left = Math.random() * 100 + '%';
+                line.style.top = Math.random() * 100 + '%';
+                line.style.transform = `rotate(${Math.random() * 360}deg)`;
+                line.style.animationDelay = Math.random() * 10 + 's';
+                bg.appendChild(line);
+            }
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function toggleCategory(header) {
+            const category = header.parentElement;
+            category.classList.toggle('open');
+        }
+
+        createWebBackground();
+    </script>
+</body>
+</html>

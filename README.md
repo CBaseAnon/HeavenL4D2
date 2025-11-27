@@ -1,17 +1,27 @@
 Project made by Aika
 
-,Special thx to https://github.com/qwertyuiop3/Storm
+Special thx to https://github.com/qwertyuiop3/Storm
 
-,lak3 for sdk
+lak3 for sdk
 
-,Jau for being jau
+Jau for being jau
 
-,Lorian for third person and other fixes
+Lorian for third person and other fixes
 
-,Bella for beta testing
+Bella for beta testing
 
-,me (for adding mostly all including the lua system)
+me (for adding mostly all including the lua system)
 
-,my other aliases:
+my other aliases:
 
-,Lucky\Mambo\Alice\lyea\Modeus (not asmodeus -_-)
+Lucky\Mambo\Alice\lyea\Modeus (not asmodeus -_-)
+
+
+Paths:
+C:\Heaven-L4D2\configs
+
+C:\Heaven-L4D2\scripts
+
+C:\Heaven-L4D2(background/profile).jpg/png
+
+C:\Heaven-L4D2(Particle.png)

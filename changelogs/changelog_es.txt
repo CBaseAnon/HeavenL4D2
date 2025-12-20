@@ -1,2 +1,53 @@
-v1.0.1
-- Primera actualizacion de heaven y beta version
+Heaven 1.0.2 Changelog
+• Añadido icon weapons esp.
+• Añadido Rapid fire polaris.
+• Añadido Hannibal aimbot.
+• Añadido Custom crosshair.
+• Añadido Custom Model (Beta).
+• Añadidos Toggles para: {Enable mods online, Enable charger turn, No fall, No hang damage, no smoker damage}.
+• Añadido Chat print hook chat.print("Hello world").
+• Re-añadido createmove prediction (function on_create_move_prediction(cmd, local_player)).
+• Añadido toggle para remove visual recoil.
+• Añadido toggle para esp in third person.
+• Añadida prioridad de entidad perfecta en STORM Aimbot.
+• Añadido hitsound.
+• Añadido KillSound.
+• Añadido triggerbot.
+• Añadido Free look.
+• Añadido Anti OBS & Anti Discord.
+• Añadido toggle para no visual recoil.
+• Añadido snaplines.
+• Añadido OOF Arrows.
+• Añadida Keybind List.
+• Añadido Fakelag.
+• Añadido Fakelag indicator.
+• Añadida Spectator list.
+• Añadido Auto load luas.
+• Corregido Perfect no spread.
+• Cambiado CreatemovePrediction para usar Command structure pointer en lugar de CUserCMDPointer.
+• Cambiada la estructura de prediction y más en las siguientes funciones: (Hannibal aim, Lunaris Aim, Autopistol, Triggerbot).
+• Corregidos errores de prediction (No fall etc etc etc).
+• Createmove Prediction USA Command_Structure y CreateMove normal usa CUserCMDPointer.
+• Corregido crash de triggerbot.
+• Corregido error de main rapid fire que no disparaba.
+• Añadido TP y Airstuck.
+• Corregido skeleton esp y otros elementos de esp.
+• Añadido Name stealer.
+• Añadido Chat spam.
+• Añadido Silent name stealer.
+• Corregidos problemas con la tecla M1 del aimbot que rompía el menú.
+• Añadido No Fog.
+• Añadido custom fog.
+• Añadido psilent no spread (pestaña de Legit aim, funciona también con rage aimbots).
+• Añadido No spread para otros aimbots.
+• Añadidas Legit Features, aim y más.
+• Añadido legit bot.
+• Añadido Fixed ceiling random pitch.
+• Auto ceiling.
+• Añadidas Spam keys para Rapid fire como infinite rocks, spitter crash, hunter ceiling, etc.
+• Añadido Anti OBS & Anti Discord ESP.
+• Corregidos crashes causados por anti obs & Anti Discord.
+• Añadido Radar.
+Problemas conocidos:
+Parpadeo (flickering) en Weapon icons y anti obs.
+Solución: Ve a tus ajustes visuales y DESACTIVA la opción MULTICORE RENDERING.

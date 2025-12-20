@@ -1,2 +1,56 @@
-v1.0.1
-- First Heaven update and beta version
+Heaven 1.0.2 Changelog:
+Added Added icon weapons esp
+Added Rapid fire polaris
+Added Hannibal aimbot
+Added Custom crosshair
+Added Custom Model (Beta)
+Added Toggles For: {Enable mods online, Enable charger turn, No fall, No hang damage, no smoker damage}
+Added Chat print hook chat.print("Hello world")
+re-added createmove prediction (function on_create_move_prediction(cmd, local_player))
+Added toggle for remove visual recoil
+Added toggle for esp in third person
+Added perfect entity priority in STORM Aimbot
+Added hitsound
+Added KillSound
+Added triggerbot
+Added Free look
+Added Anti OBS & Anti Discord
+Added toggle for no visual recoil
+Added snaplines
+Added OOF Arrows
+Added Keybind List
+Added Fakelag
+Added Fakelag indicator
+Added Spectator list
+Added Auto load luas
+Fixed Perfect no spread
+Changed CreatemovePrediction to use Command structure pointer instead of CUserCMDPointer
+Changed Strucutre of prediction and more to the next features: (Hannibal aim, Lunaris Aim, Autopistol, Triggerbot)
+Fixed prediction errors (No fall etc etc etc)
+Createmove Prediction USES Command_Structre and CreateMove normal uses CUserCMDPointer
+Fix triggerbot Crashing
+Fixed main rapid fire not shooting
+Added TP and Airstuck
+Fix skeleton esp and more esp stuff	
+Added Name stealer
+Added Chat spam
+Added Silent name stealer
+Fixed problems with aimbot key M1 breaking the menu
+Added No Fog
+Added custom fog
+Added psilent no spread (Legit aim tab, works with rage aimbots too)
+Added No spread for other aimbots
+Added Legit Features, aim and more
+Added legit bot 
+Added Fixed ceiling random pitch
+Auto ceiling
+Added Spam keys for Rapid fire such as infinite rocks, spitter crash, hunter ceiling and etc
+Added Anti OBS & Anti Discord ESP
+Fixed crashes caused by anti obs & Anti Discord
+Added Radar
+
+Known issues:
+Weapon icons and anti obs flickering
+Fix: go to your visual settings and DISABLE the option MULTICORE RENDERING
+
+the models stuff is going to get finished on 1.0.3

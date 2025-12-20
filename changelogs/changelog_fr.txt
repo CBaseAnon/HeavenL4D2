@@ -1,2 +1,51 @@
-v1.0.1
-- Première mise à jour d'Heaven et la version beta
+Journal des Modifications Heaven 1.0.2
+Ajout de l'ESP pour les icônes d'armes.
+Ajout du Tir Rapide (Rapid fire) pour le Polaris.
+Ajout de l'Aimbot Hannibal.
+Ajout du Viseur (Crosshair) personnalisé.
+Ajout de Modèle personnalisé (Bêta).
+Ajout d'options pour : {Activer les mods en ligne, Activer la rotation du Charger, Pas de dégâts de chute, Pas de dégâts de suspension, Pas de dégâts de Smoker}.
+Ajout du hook d'impression chat chat.print("Hello world").
+Réintroduction de la prédiction createmove (fonction on_create_move_prediction(cmd, local_player)).
+Ajout d'une bascule pour supprimer le recul visuel.
+Ajout d'une bascule pour l'ESP en troisième personne.
+Ajout de la priorité parfaite des entités dans l'Aimbot STORM.
+Ajout du Hitsound (Son de touche).
+Ajout du KillSound (Son de kill).
+Ajout du Triggerbot.
+Ajout de la Vue libre (Free look).
+Ajout de l'Anti OBS.
+Ajout d'une bascule pour le "No visual recoil" (Pas de recul visuel).
+Ajout des Snaplines (Lignes de visée).
+Ajout des Flèches hors champ (OOF Arrows).
+Ajout de la Liste des raccourcis clavier (Keybind List).
+Ajout du Fakelag.
+Ajout de l'indicateur de Fakelag.
+Ajout de la Liste des spectateurs.
+Ajout du chargement automatique des scripts Luas.
+Correction du "Perfect no spread" (Pas de dispersion parfaite).
+Modification de la Prédiction Createmove pour utiliser le pointeur de structure de commande au lieu de CUserCMDPointer.
+Modification de la structure de prédiction et autres pour les prochaines fonctionnalités : (Hannibal aim, Lunaris Aim, Autopistol, Triggerbot).
+Correction des erreurs de prédiction (No fall, etc., etc.).
+Note technique : La Prédiction Createmove UTILISE Command_Structre et le CreateMove normal utilise CUserCMDPointer.
+Correction du crash du Triggerbot.
+Correction du tir rapide principal qui ne tirait pas.
+Ajout du TP (Téléportation) et de l'Airstuck.
+Correction de l'ESP squelette et d'autres éléments ESP.
+Ajout du Name Stealer (Usurpation de nom).
+Ajout du Chat spam.
+Ajout du Silent Name Stealer (Usurpation de nom silencieuse).
+Correction des problèmes avec la touche d'aimbot M1 qui cassait le menu (toujours en test, pourrait encore être cassé).
+Ajout de No Fog (Pas de brouillard).
+Ajout de brouillard personnalisé.
+Ajout du "psilent no spread" (Onglet Legit aim, fonctionne aussi avec les rage aimbots).
+Ajout du "No spread" pour les autres aimbots.
+Ajout de fonctionnalités Legit, aim et plus.
+Ajout du Legit bot.
+Ajout du "Fixed ceiling random pitch" (Pitch de plafond aléatoire fixe).
+Ajout du Plafond automatique (Auto ceiling).
+Ajout de touches de spam pour le Tir Rapide comme infinite rocks, spitter crash, hunter ceiling, etc.
+Ajout de l'ESP Anti OBS.
+Correction des crashs causés par l'anti obs.
+Ajout du Radar.
+Problèmes connus : Scintillement des icônes d'armes et de l'anti obs. Solution : Allez dans vos paramètres visuels et DÉSACTIVEZ l'option RENDU MULTICŒUR (MULTICORE RENDERING).

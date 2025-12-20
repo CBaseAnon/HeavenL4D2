@@ -1,2 +1,55 @@
-v1.0.1
-- Atualização e versão beta do First Heaven
+Registro de Alterações no Heaven-Hook (v1.0.2):
+
+Adicionado ícones de armas no ESP
+Adicionado "Rapid Fire" do Polaris
+Adicionado Aimbot do Hannibal
+Adicionado Miras Personalizadas
+Adicionado Modelo Personalizado (Beta)
+Adicionado ativadores para: {Ativar mods online, Ativar rotação do charger, Não tomar dano de queda, Não tomar dano enquanto você estiver pendurado, Não tomar dano por smoker}
+Adicionado hook de impressão de bate-papo (chat.print("Olá, mundo")
+Re-adicionado previsão do CreateMove (function on_create_move_prediction(cmd, local_player)
+Adicionado ativador para remover o recuo visual
+Adicionado ativador para ESP em terceira pessoa
+Adicionada prioridade perfeita de entidade no STORM Aimbot
+Adicionado som ao acertar inimigo
+Adicionado som ao matar inimigo/amigo
+Adicionado Triggerbot
+Adicionado "Free Look"
+Adicionado Anti-OBS
+Adicionado Snaplines
+Adicionadas Setas Fora da Visão
+Adicionada Lista de teclas pressionadas
+Adicionado Fakelag
+Adicionado indicador de Fakelag
+Adicionada lista de espectadores
+Adicionado carregamento automático de luas
+Balas sem espalhar (nospread) corrigido perfeitamente
+Alterado previsão do CreateMove para usar o commando de ponteiro de estrutura em vez de CUserCMDPointer
+Alterada estrutura de previsão e mais para as próximas funções: (Aimbot do Hannibal, Aimbot do Lunaris, Disparo de pistola automático, Triggerbot)
+Corrigidos erros de previsão (Não tomar dano de queda, etc.)
+Alterado a previsão que o Createmove usa Command_Structre e CreateMove que normalmente usava CUserCMDPointer
+Corrigido Triggerbot fazendo que o jogo feche
+Corrigido problema do "Rapid Fire" principal não estar disparando
+Adicionados TP e Airstuck
+Corrigido esp de esqueleto e outras coisas relacionadas ao ESP
+Adicionado "Name Stealer"
+Adicionado Spam de bate-papo
+Adicionado Name Stealer silencioso
+Corrigido problemas com aimbot e a tecla M1 quebrando o menu (ainda em teste, pode continuar o problema)
+Adicionado No Fog
+Adicionado neblada personalizada
+Adicionado psilent no spread (aba Legit Aim, funciona com aimbots rage também)
+Adicionado Balas sem espalhar (perfeitamente) para os outros aimbots
+Adicionadas funcionalidades legítimas, mira e mais
+Adicionado bot legítimo
+Corrigido ceiling em ângulo aleatório
+Adicionado ceiling automático
+Adicionadas teclas de spam para Rapid Fire, como pedras infinitas, cuspe da Spitter infinito, ceiling do Hunter, etc.
+Adicionado Anti-OBS ESP
+Corrigidos fechamentos causados pelo Anti-OBS
+Adicionado Radar
+
+Problemas conhecidos:
+
+Ícones das armas e Anti OBS ficar piscando
+Solução: Vá para as configurações visuais e DESATIVE a opção "MULTICORE RENDERING"
